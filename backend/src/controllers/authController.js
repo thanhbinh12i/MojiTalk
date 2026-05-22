@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import Session from "../models/Session.js";
 
-const ACCESS_TOKEN_TTL = "30m"; // thuờng là dưới 15m
-const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 ngày
+const ACCESS_TOKEN_TTL = "30m";
+const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000;
 
 export const signUp = async (req, res) => {
   try {
@@ -93,7 +93,7 @@ export const signIn = async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "none", //backend, frontend deploy riêng
+      sameSite: "none",
       maxAge: REFRESH_TOKEN_TTL,
     });
 
@@ -157,7 +157,6 @@ export const refreshToken = async (req, res) => {
       { expiresIn: ACCESS_TOKEN_TTL }
     );
 
-    // return
     return res.status(200).json({ accessToken });
   } catch (error) {
     console.error("Lỗi khi gọi refreshToken", error);
