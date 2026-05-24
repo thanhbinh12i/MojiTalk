@@ -8,7 +8,15 @@ import UserAvatar from "./UserAvatar";
 import StatusBadge from "./StatusBadge";
 import GroupChatAvatar from "./GroupChatAvatar";
 
-const ChatWindowHeader: React.FC = ({ chat }: { chat?: Conversation }) => {
+interface ChatWindowHeaderProps {
+  chat?: Conversation;
+}
+
+const ChatWindowHeader: React.FC<ChatWindowHeaderProps> = ({
+  chat,
+}: {
+  chat?: Conversation;
+}) => {
   const { conversations, activeConversationId } = useChatStore();
   const { user } = useAuthStore();
   let otherUser;

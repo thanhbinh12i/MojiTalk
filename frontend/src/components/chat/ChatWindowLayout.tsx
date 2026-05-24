@@ -1,4 +1,3 @@
-import React from "react";
 import { useChatStore } from "@/stores/useChatStore";
 import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import { SidebarInset } from "../ui/sidebar";
@@ -7,7 +6,7 @@ import ChatWindowBody from "./ChatWindowBody";
 import MessageInput from "./MessageInput";
 import ChatWindowSkeleton from "../skeleton/ChatWindowSkeleton";
 
-const ChatWindowLayout: React.FC = () => {
+const ChatWindowLayout = () => {
   const {
     activeConversationId,
     conversations,
@@ -27,12 +26,15 @@ const ChatWindowLayout: React.FC = () => {
 
   return (
     <SidebarInset className="flex flex-col h-full flex-1 overflow-hidden rounded-sm shadow-md">
-      <ChatWindowHeader />
+      {/* Header */}
+      <ChatWindowHeader chat={selectedConvo} />
 
+      {/* Body */}
       <div className="flex-1 overflow-y-auto bg-primary-foreground">
         <ChatWindowBody />
       </div>
 
+      {/* Footer */}
       <MessageInput selectedConvo={selectedConvo} />
     </SidebarInset>
   );
