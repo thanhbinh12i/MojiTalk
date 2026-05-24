@@ -8,9 +8,11 @@ import MessageInput from "./MessageInput";
 import ChatWindowSkeleton from "../skeleton/ChatWindowSkeleton";
 
 const ChatWindowLayout: React.FC = () => {
-  const activeConversationId = useChatStore((s) => s.activeConversationId);
-  const conversations = useChatStore((s) => s.conversations);
-  const loading = useChatStore((s) => s.messageLoading);
+  const {
+    activeConversationId,
+    conversations,
+    messageLoading: loading,
+  } = useChatStore();
 
   const selectedConvo =
     conversations.find((c) => c._id === activeConversationId) ?? null;
@@ -31,7 +33,7 @@ const ChatWindowLayout: React.FC = () => {
         <ChatWindowBody />
       </div>
 
-      <MessageInput />
+      <MessageInput selectedConvo={selectedConvo} />
     </SidebarInset>
   );
 };
