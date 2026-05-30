@@ -56,6 +56,8 @@ export interface ChatState {
     content: string,
     imrUrl?: string,
   ) => Promise<void>;
+  addMessage: (message: Message) => Promise<void>;
+  updateConversation: (conversation: Conversation) => void;
 }
 
 export interface SocketState {
