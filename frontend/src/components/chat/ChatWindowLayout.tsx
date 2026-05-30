@@ -5,16 +5,32 @@ import ChatWindowHeader from "./ChatWindowHeader";
 import ChatWindowBody from "./ChatWindowBody";
 import MessageInput from "./MessageInput";
 import ChatWindowSkeleton from "../skeleton/ChatWindowSkeleton";
+import { useEffect } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const ChatWindowLayout = () => {
   const {
     activeConversationId,
     conversations,
     messageLoading: loading,
+    markAsSeen,
   } = useChatStore();
+  const { user } = useAuthStore();
 
   const selectedConvo =
     conversations.find((c) => c._id === activeConversationId) ?? null;
+
+  useEffect(() => {
+    if (!selectedConvo || !user) return;
+
+    (async () => {
+      try {
+        await markAsSeen();
+      } catch (error) {
+        console.error("mark as seen failed", error);
+      }
+    })();
+  }, [markAsSeen, selectedConvo, user]);
 
   if (!selectedConvo) {
     return <ChatWelcomeScreen />;

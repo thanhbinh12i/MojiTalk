@@ -1,7 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useChatStore } from "@/stores/useChatStore";
 import ChatWelcomeScreen from "./ChatWelcomeScreen";
 import MessageItem from "./MessageItem";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const ChatWindowBody: React.FC = () => {
   const {
@@ -9,12 +12,28 @@ const ChatWindowBody: React.FC = () => {
     conversations,
     messages: allMessages,
   } = useChatStore();
+  const { user } = useAuthStore();
+  const [lastMessageStatus, setLastMessageStatus] = useState<
+    "delivered" | "seen"
+  >("delivered");
 
   const messages = allMessages[activeConversationId!]?.items ?? [];
 
   const selectedConvo = conversations.find(
     (c) => c._id === activeConversationId,
   );
+
+  useEffect(() => {
+    const lastMessage = selectedConvo?.lastMessage;
+    if (!lastMessage || !user?._id) {
+      setLastMessageStatus("delivered");
+      return;
+    }
+
+    const seenBy = selectedConvo?.seenBy ?? [];
+
+    setLastMessageStatus([...seenBy].length > 0 ? "seen" : "delivered");
+  }, [selectedConvo]);
 
   if (!selectedConvo) {
     return <ChatWelcomeScreen />;
@@ -38,7 +57,7 @@ const ChatWindowBody: React.FC = () => {
             index={index}
             messages={messages}
             selectedConvo={selectedConvo}
-            lastMessageStatus="delivered"
+            lastMessageStatus={lastMessageStatus}
           />
         ))}
       </div>

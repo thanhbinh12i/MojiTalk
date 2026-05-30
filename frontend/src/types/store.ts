@@ -49,15 +49,16 @@ export interface ChatState {
   sendDirectMessage: (
     recipientId: string,
     content: string,
-    imrUrl?: string,
+    imgUrl?: string,
   ) => Promise<void>;
   sendGroupMessage: (
     conversationId: string,
     content: string,
-    imrUrl?: string,
+    imgUrl?: string,
   ) => Promise<void>;
   addMessage: (message: Message) => Promise<void>;
-  updateConversation: (conversation: Conversation) => void;
+  updateConversation: (conversation: unknown) => void;
+  markAsSeen: () => Promise<void>;
 }
 
 export interface SocketState {
